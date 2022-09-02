@@ -24,6 +24,7 @@ import {
 
 const Tasks: React.FC = () => {
   const tarefasRedux = useAppSelector(selectAll);
+  const userRedux = useAppSelector((state) => state.user);
 
   const [description, setDescription] = useState<string>("");
   const [detail, setDetail] = useState<string>("");
@@ -55,12 +56,9 @@ const Tasks: React.FC = () => {
 
   function cadastrarTarefa() {
     const cadastrarTarefa: CriarTask = {
-      description: description,
+      description: "",
       detail: detail,
-      id: "",
     };
-
-    dispatch(addOne(cadastrarTarefa));
 
     setDescription("");
     setDetail("");
@@ -90,11 +88,7 @@ const Tasks: React.FC = () => {
   }
 
   function lerTarefa() {
-    dispatch(
-      lerTask(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6IjQ2MDQ1M2VkLTJmNzYtNGE1ZC1hZGIwLTFkZWQyN2U1M2U2OCIsInVzZXJOYW1lIjoibHVjYXNAbHVjYXMuY29tIn0sImlhdCI6MTY2MjEzOTY3NSwiZXhwIjoxNjYyMTQzMjc1fQ.lxDPtZfZEL2FrwgrLSDU8BE1snBCHcVCmBBasWd33UE"
-      )
-    );
+    dispatch(lerTask(userRedux.token));
   }
 
   return (
@@ -115,7 +109,7 @@ const Tasks: React.FC = () => {
         </Button>
         {tarefasRedux.map((item: LerTask) => {
           return (
-            <div key={item.description} className='mt-5'>
+            <div key={item.id} className='mt-5'>
               <Typography sx={{ color: "white" }}>
                 Descrição: {item.description}
               </Typography>

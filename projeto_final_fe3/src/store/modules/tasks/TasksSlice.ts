@@ -13,7 +13,6 @@ export interface LerTask {
 }
 
 export interface CriarTask {
-  id: string;
   description: string;
   detail: string;
   token?: string;
@@ -35,7 +34,7 @@ export interface DeletarTask {
 
 export const lerTask = createAsyncThunk(
   "task/readTasksByUserId",
-  async (token: string, thunkAPI) => {
+  async (token: string | undefined, thunkAPI) => {
     const response = await axios.get(
       `https://api-tasks-list.herokuapp.com/task/readTasksByUserId?token=${token}`
     );
@@ -44,7 +43,7 @@ export const lerTask = createAsyncThunk(
 );
 
 export const criarTask = createAsyncThunk(
-  "task/",
+  "task/create",
   async (token: string, thunkAPI) => {
     const response = await axios.post(
       "https://api-tasks-list.herokuapp.com/task/"
@@ -66,7 +65,7 @@ export const editarTask = createAsyncThunk(
 export const deletarTask = createAsyncThunk(
   "task/{id}",
   async (token: string, thunkAPI) => {
-    const response = await axios.put(
+    const response = await axios.delete(
       "https://api-tasks-list.herokuapp.com/task/{id}"
     );
     return response.data.data;
@@ -96,7 +95,7 @@ const tasksSlice = createSlice({
     builder.addCase(lerTask.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(criarTask.fulfilled, (state, action) => {
+    builder.addCase(lerTask.fulfilled, (state, action) => {
       adapter.setAll(state, action.payload);
       state.loading = false;
     });
