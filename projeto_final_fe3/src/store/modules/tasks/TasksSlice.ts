@@ -6,12 +6,28 @@ import {
 import axios from "axios";
 
 export interface LerTask {
+  id: string;
   description: string;
   detail: string;
   token?: string;
 }
 
 export interface CriarTask {
+  id: string;
+  description: string;
+  detail: string;
+  token?: string;
+}
+
+export interface EditarTask {
+  id: string;
+  description: string;
+  detail: string;
+  token?: string;
+}
+
+export interface DeletarTask {
+  id: string;
   description: string;
   detail: string;
   token?: string;
@@ -19,21 +35,41 @@ export interface CriarTask {
 
 export const lerTask = createAsyncThunk(
   "task/readTasksByUserId",
-  async (user: LerTask, thunkAPI) => {
+  async (token: string, thunkAPI) => {
     const response = await axios.get(
-      "https://api-tasks-list.herokuapp.com/task/readTasksByUserId"
+      `https://api-tasks-list.herokuapp.com/task/readTasksByUserId?token=${token}`
     );
-    return response.data;
+    return response.data.data;
   }
 );
 
 export const criarTask = createAsyncThunk(
   "task/",
-  async (user: LerTask, thunkAPI) => {
+  async (token: string, thunkAPI) => {
     const response = await axios.post(
       "https://api-tasks-list.herokuapp.com/task/"
     );
-    return response.data;
+    return response.data.data;
+  }
+);
+
+export const editarTask = createAsyncThunk(
+  "task/",
+  async (token: string, thunkAPI) => {
+    const response = await axios.put(
+      "https://api-tasks-list.herokuapp.com/task/"
+    );
+    return response.data.data;
+  }
+);
+
+export const deletarTask = createAsyncThunk(
+  "task/{id}",
+  async (token: string, thunkAPI) => {
+    const response = await axios.put(
+      "https://api-tasks-list.herokuapp.com/task/{id}"
+    );
+    return response.data.data;
   }
 );
 
@@ -54,6 +90,7 @@ const tasksSlice = createSlice({
     addOne: adapter.addOne,
     addMany: adapter.addMany,
     updateOne: adapter.updateOne,
+    removeOne: adapter.removeOne,
   },
   extraReducers: (builder) => {
     builder.addCase(lerTask.pending, (state, action) => {
@@ -66,5 +103,5 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { addOne, addMany, updateOne } = tasksSlice.actions;
+export const { addOne, addMany, updateOne, removeOne } = tasksSlice.actions;
 export default tasksSlice.reducer;

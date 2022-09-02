@@ -29,7 +29,6 @@ export default function DenseTable() {
               key={row.description}
               sx={{ "&:last-child td, &:last-child th": { border: 1 } }}
             >
-              <TableCell align='right'>{row.description}</TableCell>
               <TableCell align='right'>{row.detail}</TableCell>
             </TableRow>
           ))}
