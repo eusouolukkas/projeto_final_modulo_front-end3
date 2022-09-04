@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "../../components/AppBar";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -88,7 +88,11 @@ const Tasks: React.FC = () => {
   }
 
   function lerTarefa() {
-    dispatch(lerTask(userRedux.token));
+    dispatch(
+      lerTask(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6IjQ2MDQ1M2VkLTJmNzYtNGE1ZC1hZGIwLTFkZWQyN2U1M2U2OCIsInVzZXJOYW1lIjoibHVjYXNAbHVjYXMuY29tIn0sImlhdCI6MTY2MjMxNTA1NSwiZXhwIjoxNjYyMzE4NjU1fQ.zllCg9tTR722HJAlxU4Y__TAIllXaVebQHrh5sIF7dw"
+      )
+    );
   }
 
   return (
@@ -110,11 +114,12 @@ const Tasks: React.FC = () => {
         {tarefasRedux.map((item: LerTask) => {
           return (
             <div key={item.id} className='mt-5'>
+              <Typography sx={{ color: "white" }}>Id: {item.id}</Typography>
               <Typography sx={{ color: "white" }}>
                 Descrição: {item.description}
               </Typography>
               <Typography sx={{ color: "white" }}>
-                Detalhamento: {item.detail}
+                Detalhes: {item.detail}
               </Typography>
               <Button onClick={() => editarTarefa(item)} variant='outlined'>
                 Editar

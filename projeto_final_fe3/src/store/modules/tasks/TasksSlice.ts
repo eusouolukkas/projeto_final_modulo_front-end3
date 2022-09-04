@@ -44,7 +44,7 @@ export const lerTask = createAsyncThunk(
 
 export const criarTask = createAsyncThunk(
   "task/create",
-  async (token: string, thunkAPI) => {
+  async (task: CriarTask, thunkAPI) => {
     const response = await axios.post(
       "https://api-tasks-list.herokuapp.com/task/"
     );
@@ -54,7 +54,7 @@ export const criarTask = createAsyncThunk(
 
 export const editarTask = createAsyncThunk(
   "task/",
-  async (token: string, thunkAPI) => {
+  async (task: EditarTask, thunkAPI) => {
     const response = await axios.put(
       "https://api-tasks-list.herokuapp.com/task/"
     );
@@ -64,9 +64,9 @@ export const editarTask = createAsyncThunk(
 
 export const deletarTask = createAsyncThunk(
   "task/{id}",
-  async (token: string, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     const response = await axios.delete(
-      "https://api-tasks-list.herokuapp.com/task/{id}"
+      `https://api-tasks-list.herokuapp.com/task/${id}`
     );
     return response.data.data;
   }
@@ -92,11 +92,19 @@ const tasksSlice = createSlice({
     removeOne: adapter.removeOne,
   },
   extraReducers: (builder) => {
-    builder.addCase(lerTask.pending, (state, action) => {
-      state.loading = true;
-    });
     builder.addCase(lerTask.fulfilled, (state, action) => {
       adapter.setAll(state, action.payload);
+    });
+    builder.addCase(criarTask.fulfilled, (state, action) => {
+      adapter.updateOne(state, action.payload);
+      state.loading = false;
+    });
+    builder.addCase(editarTask.fulfilled, (state, action) => {
+      adapter.addOne(state, action.payload);
+      state.loading = false;
+    });
+    builder.addCase(deletarTask.fulfilled, (state, action) => {
+      adapter.removeOne(state, action.payload);
       state.loading = false;
     });
   },

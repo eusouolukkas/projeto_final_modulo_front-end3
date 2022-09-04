@@ -74,7 +74,9 @@ export default function FormDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={cadastrarUsuario}>Continuar</Button>
+          <Button onClick={cadastrarUsuario} href='/'>
+            Continuar
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
